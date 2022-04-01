@@ -1,0 +1,22 @@
+version: '3.7'
+services:
+  mysql:
+    container_name: mysql
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=1234
+      - MYSQL_DATABASE=registration_crud
+    ports:
+      - 3306:3306
+    networks:
+      - bubble
+  pessoa:
+    container_name: registration
+    depends_on:
+      - mysql
+    build: .
+    networks:
+      - bubble
+networks:
+  bubble:
+    external: true

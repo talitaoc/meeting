@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/registration_crud
+    username: root
+    password: 1234
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    hibernate.ddl-auto: create
+    generate-ddl: true
+    show-sql: true
