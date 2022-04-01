@@ -34,16 +34,14 @@ public class RegistrationController {
     }
 
     //Update: se o usuário ja existe, atualiza, caso contrario faz cadastro.
-    @PutMapping("/update/{cpf}")
-    public Registration updateRegistration(@PathVariable Long cpf, @RequestBody RegistrationDTO registrationDTO){
+    @PutMapping("/update")
+    public Registration updateRegistration( @RequestBody RegistrationDTO registrationDTO){
 
       //TODO entender como setar os atributos por partes do registration
 
-        if(registrationService.existsByCpf(cpf)){
-            return registrationService.update(registrationDTO.convert());
-        }
+        return registrationService.update(registrationDTO.convert());
 
-        return registrationService.save(registrationDTO.convert());
+
     }
 
     @DeleteMapping("/delete")
