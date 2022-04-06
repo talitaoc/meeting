@@ -42,8 +42,7 @@ public class RegistrationServiceTest {
         assertNotNull(savedRegistration.getId());
         assertEquals(savedRegistration.getName(),registrationToBeSaved.getName());
         assertNotNull(savedRegistration.getCpf());
-        assertEquals(savedRegistration.getDate(),registrationToBeSaved.getDate());
-        assertEquals(savedRegistration.getGroup(),registrationToBeSaved.getGroup());
+        assertEquals(savedRegistration.getGroupName(),registrationToBeSaved.getGroupName());
 
         verify(registrationRepository,times(1)).save(registrationToBeSaved);
 
@@ -116,8 +115,7 @@ public class RegistrationServiceTest {
         assertNotNull(replaceRegistration.getId());
         assertNotNull(replaceRegistration.getCpf());
         assertEquals(replaceRegistration.getName(),registrationToBeUpdate.getName());
-        assertEquals(replaceRegistration.getDate(),registrationToBeUpdate.getDate());
-        assertEquals(replaceRegistration.getGroup(),registrationToBeUpdate.getGroup());
+        assertEquals(replaceRegistration.getGroupName(),registrationToBeUpdate.getGroupName());
 
         verify(registrationRepository,times(1)).save(registrationToBeUpdate);
 
@@ -170,8 +168,7 @@ public class RegistrationServiceTest {
                 .id(1L)
                 .name("Lola")
                 .cpf(1234L)
-                .date(LocalDate.now())
-                .group("001")
+                .groupName("001")
                 .build();
     }
 }

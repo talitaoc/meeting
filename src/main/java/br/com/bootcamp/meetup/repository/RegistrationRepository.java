@@ -9,4 +9,5 @@ public interface RegistrationRepository extends JpaRepository<Registration, Long
 
     boolean existsById(Long id);
     Registration getById(Long id);
+    boolean existsByCpf(Long id);
 }

@@ -1,9 +1,12 @@
 package br.com.bootcamp.meetup.model;
 
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "REGISTRATION_PERSON", schema = "registration_crud")
@@ -24,7 +27,11 @@ public class Registration {
     @Column(nullable = false, unique = true, length = 11)
     private Long cpf;
     @Column
-    private LocalDate date;
+    @CreatedDate
+    private LocalDateTime createdDate;
+    @Column
+    @LastModifiedDate
+    private LocalDateTime lastModifiedDate;
     @Column(nullable = false, unique = false, length = 50)
-    private String group;
+    private String groupName;
 }

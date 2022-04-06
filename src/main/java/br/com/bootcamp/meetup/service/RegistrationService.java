@@ -24,7 +24,7 @@ public class RegistrationService {
     @Transactional
     public Registration save(Registration registration){
 
-        if(registrationRepository.existsById(registration.getId())){
+        if(registrationRepository.existsByCpf(registration.getCpf())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Registration already exists.");
         }
 

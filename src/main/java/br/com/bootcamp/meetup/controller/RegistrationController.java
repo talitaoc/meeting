@@ -6,13 +6,12 @@ import br.com.bootcamp.meetup.service.RegistrationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.time.LocalDate;
+
 import java.util.List;
 
 
@@ -27,7 +26,7 @@ public class RegistrationController {
 
     @PostMapping("/save")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<RegistrationDTO> save(@RequestBody @Valid RegistrationDTO registrationDTO){
+    public ResponseEntity<RegistrationDTO> save(@RequestBody RegistrationDTO registrationDTO){
 
         Registration registration = modelMapper.map(registrationDTO,Registration.class);
         registration = registrationService.save(registration);
@@ -49,15 +48,14 @@ public class RegistrationController {
     }
 
     @PutMapping
-    public ResponseEntity<RegistrationDTO> replace(@RequestBody @Valid RegistrationDTO registrationDTO){
+    public ResponseEntity<RegistrationDTO> replace(@RequestBody RegistrationDTO registrationDTO){
 
         Registration registration = modelMapper.map(registrationDTO,Registration.class);
         registration = registrationService.findById(registration.getId());
 
         registration.setName(registration.getName());
         registration.setCpf(registration.getCpf());
-        registration.setGroup(registration.getGroup());
-        registration.setDate(LocalDate.now());
+        registration.setGroupName(registration.getGroupName());
 
         registrationService.save(registration);
 
