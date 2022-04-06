@@ -1,18 +1,18 @@
 package br.com.bootcamp.meetup.service;
 
-import br.com.bootcamp.meetup.exception.BusinessException;
+
 import br.com.bootcamp.meetup.model.Registration;
 import br.com.bootcamp.meetup.repository.RegistrationRepository;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -24,51 +24,44 @@ public class RegistrationService {
     @Transactional
     public Registration save(Registration registration){
 
-        if(registrationRepository.existsByCpf(registration.getCpf())){
-            throw new BusinessException("Already exists.");
+        if(registrationRepository.existsById(registration.getId())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Registration already exists.");
         }
 
         return registrationRepository.save(registration);
-    }
-
-    public boolean existsByCpf(Long cpf){
-        return registrationRepository.existsByCpf(cpf);
     }
 
     public Registration update(Registration registration){
 
         if(Objects.isNull(registration)){
-            throw new BusinessException("Registration not found.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Registration not found.");
         }
 
         return registrationRepository.save(registration);
     }
 
-    public Registration getRegistrationByCpf(Long cpf){
+    public Registration findById(Long id){
 
-        if(Objects.isNull(cpf)){
-          throw new BusinessException("Registration not found.");
+        if(Objects.isNull(id)){
+          throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Registration not found.");
         }
-
-        return registrationRepository.findByCpf(cpf);
+        return registrationRepository.getById(id);
     }
 
-    public Page<Registration> findAllRegistration(){
-        int page = 0;
-        int size = 10;
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.ASC, "name");
+    public List<Registration> findAllRegistration(){
 
-        return new PageImpl<>(registrationRepository.findAll(),pageRequest,size);
+        List<Registration> registrationList = registrationRepository.findAll();
+
+        return registrationList;
     }
 
     @Transactional
-    public void delete(Registration registration){
+    public void delete(Long id) {
 
-        if(Objects.isNull(registration)){
-            throw new BusinessException("Registration can not be deleted, because does not exist.");
+        if(Objects.isNull(id)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Registration not found.");
         }
+        registrationRepository.delete(findById(id));
 
-        registrationRepository.delete(registration);
     }
-
 }

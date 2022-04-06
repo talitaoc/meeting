@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RegistrationRepository extends JpaRepository<Registration, Long> {
 
-    boolean existsByCpf(Long cpf);
-    Registration findByCpf(Long cpf);
+    boolean existsById(Long id);
+    Registration getById(Long id);
 }

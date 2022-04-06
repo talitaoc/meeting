@@ -5,8 +5,15 @@ import br.com.bootcamp.meetup.model.Registration;
 import br.com.bootcamp.meetup.service.RegistrationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.time.LocalDate;
+import java.util.List;
 
 
 @Slf4j
@@ -16,37 +23,55 @@ import org.springframework.web.bind.annotation.*;
 public class RegistrationController {
 
     private final RegistrationService registrationService;
+    private final ModelMapper modelMapper;
 
     @PostMapping("/save")
-    public Registration saveRegistration(@RequestBody RegistrationDTO registrationDTO){
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<RegistrationDTO> save(@RequestBody @Valid RegistrationDTO registrationDTO){
 
-        return registrationService.save(registrationDTO.convert());
-    }
+        Registration registration = modelMapper.map(registrationDTO,Registration.class);
+        registration = registrationService.save(registration);
 
-    @GetMapping("/get/{cpf}")
-    public Registration getRegistration(@RequestParam(value = "cpf", required = false) Long cpf){
-        return registrationService.getRegistrationByCpf(cpf);
-    }
-
-    @GetMapping("/get")
-    public Page<Registration> getAllRegistration(){
-        return registrationService.findAllRegistration();
-    }
-
-    //Update: se o usuário ja existe, atualiza, caso contrario faz cadastro.
-    @PutMapping("/update")
-    public Registration updateRegistration( @RequestBody RegistrationDTO registrationDTO){
-
-      //TODO entender como setar os atributos por partes do registration
-
-        return registrationService.update(registrationDTO.convert());
-
+        return new ResponseEntity<>(modelMapper.map(registration,RegistrationDTO.class), HttpStatus.CREATED);
 
     }
 
-    @DeleteMapping("/delete")
-    public void deleteRegistration(@RequestParam(value = "cpf", required = false) Long cpf){
-        registrationService.delete(registrationService.getRegistrationByCpf(cpf));
+    @GetMapping
+    public ResponseEntity<List<Registration>> list(){
+
+        return ResponseEntity.ok(registrationService.findAllRegistration());
+    }
+
+    @GetMapping(path = "{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Registration> findById(@PathVariable(value = "id", required = false) Long id){
+        return ResponseEntity.ok(registrationService.findById(id));
+    }
+
+    @PutMapping
+    public ResponseEntity<RegistrationDTO> replace(@RequestBody @Valid RegistrationDTO registrationDTO){
+
+        Registration registration = modelMapper.map(registrationDTO,Registration.class);
+        registration = registrationService.findById(registration.getId());
+
+        registration.setName(registration.getName());
+        registration.setCpf(registration.getCpf());
+        registration.setGroup(registration.getGroup());
+        registration.setDate(LocalDate.now());
+
+        registrationService.save(registration);
+
+        log.info("Update was a success {} ",registration);
+
+        return new ResponseEntity<>(modelMapper.map(registration, RegistrationDTO.class), HttpStatus.CREATED);
+
+    }
+
+    @DeleteMapping(path = "{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity<Void> delete(@PathVariable(value = "id", required = false) Long id){
+        registrationService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 
