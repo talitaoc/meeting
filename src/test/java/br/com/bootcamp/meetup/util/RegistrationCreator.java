@@ -1,7 +1,9 @@
 package br.com.bootcamp.meetup.util;
 
+import br.com.bootcamp.meetup.dtos.RegistrationDTO;
 import br.com.bootcamp.meetup.model.Registration;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +14,7 @@ public class RegistrationCreator {
         return Registration.builder()
                 .name("Lola")
                 .cpf(1234L)
-                .groupName("gatinho")
+                .groupName("Meetup kitten")
                 .build();
     }
 
@@ -22,7 +24,7 @@ public class RegistrationCreator {
                 .id(1L)
                 .name("Lola")
                 .cpf(1234L)
-                .groupName("gatinho")
+                .groupName("Meetup kitten")
                 .build();
     }
 
@@ -30,9 +32,9 @@ public class RegistrationCreator {
 
         return Registration.builder()
                 .id(1L)
-                .name("Preta")
+                .name("Lince")
                 .cpf(1234L)
-                .groupName("gatinho")
+                .groupName("Meetup kitten")
                 .build();
     }
 

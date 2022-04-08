@@ -7,12 +7,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -24,27 +24,39 @@ public class RegistrationController {
     private final RegistrationService registrationService;
     private final ModelMapper modelMapper;
 
-    @PostMapping("/save")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<RegistrationDTO> save(@RequestBody RegistrationDTO registrationDTO){
 
         Registration registration = modelMapper.map(registrationDTO,Registration.class);
         registration = registrationService.save(registration);
 
+
         return new ResponseEntity<>(modelMapper.map(registration,RegistrationDTO.class), HttpStatus.CREATED);
 
     }
 
-    @GetMapping
-    public ResponseEntity<List<Registration>> list(){
+    @GetMapping //testar método depois
+    public ResponseEntity<List<RegistrationDTO>> list(){
 
-        return ResponseEntity.ok(registrationService.findAllRegistration());
+        List<Registration> registrationList = registrationService.findAllRegistration();
+
+        List<RegistrationDTO> registrationDTO = registrationList
+                .stream()
+                .map(registration -> modelMapper.map(registration, RegistrationDTO.class))
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(registrationDTO, HttpStatus.OK);
     }
 
     @GetMapping(path = "{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Registration> findById(@PathVariable(value = "id", required = false) Long id){
-        return ResponseEntity.ok(registrationService.findById(id));
+    public ResponseEntity<RegistrationDTO> findById(@PathVariable(value = "id", required = false) Long id){
+
+        Registration registration = registrationService.findById(id);
+        
+        return new ResponseEntity<>(modelMapper.map(registration,RegistrationDTO.class), HttpStatus.OK);
+
     }
 
     @PutMapping
