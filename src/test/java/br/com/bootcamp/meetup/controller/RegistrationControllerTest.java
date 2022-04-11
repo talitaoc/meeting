@@ -6,12 +6,13 @@ import br.com.bootcamp.meetup.service.RegistrationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -71,14 +72,18 @@ public class RegistrationControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .content(json);
 
-
-        mockMvc
+        val response = mockMvc
                 .perform(requestBuilder)
                 .andExpect(status().isCreated());
+
                 //.andExpect(jsonPath("id").value(1L))
                 //.andExpect(jsonPath("name").value(registrationDTO.getName()));
                 //.andExpect(jsonPath("cpf").value(registrationDTO.getCpf()))
                 //.andExpect(jsonPath("groupName").value(registrationDTO.getGroupName()));
+
+        String responseData = response.getResponse().getContentAsString();
+
+        assertEquals(responseData, json);
 
     }
 
