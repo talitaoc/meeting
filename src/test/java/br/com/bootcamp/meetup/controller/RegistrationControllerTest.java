@@ -1,5 +1,6 @@
 package br.com.bootcamp.meetup.controller;
 
+import br.com.bootcamp.meetup.configuration.ModelMapperConfiguration;
 import br.com.bootcamp.meetup.dtos.RegistrationDTO;
 import br.com.bootcamp.meetup.model.Registration;
 import br.com.bootcamp.meetup.service.RegistrationService;
@@ -34,7 +35,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 @Slf4j
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
-@WebMvcTest(controllers = {RegistrationController.class})
+@WebMvcTest(controllers = {RegistrationController.class, ModelMapperConfiguration.class})
 @AutoConfigureMockMvc
 public class RegistrationControllerTest {
 
@@ -42,9 +43,6 @@ public class RegistrationControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @MockBean
-    RegistrationController registrationController;
 
     @MockBean
     RegistrationService registrationService;
@@ -72,18 +70,13 @@ public class RegistrationControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .content(json);
 
-        val response = mockMvc
-                .perform(requestBuilder)
-                .andExpect(status().isCreated());
+        mockMvc //lombok deixa os atributos finais
+                .perform(requestBuilder) //busca a URL do endpoint /meetup verbo POST
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("name").value(registrationDTO.getName()))
+                .andExpect(jsonPath("cpf").value(registrationDTO.getCpf()))
+                .andExpect(jsonPath("groupName").value(registrationDTO.getGroupName()));
 
-                //.andExpect(jsonPath("id").value(1L))
-                //.andExpect(jsonPath("name").value(registrationDTO.getName()));
-                //.andExpect(jsonPath("cpf").value(registrationDTO.getCpf()))
-                //.andExpect(jsonPath("groupName").value(registrationDTO.getGroupName()));
-
-        String responseData = response.getResponse().getContentAsString();
-
-        assertEquals(responseData, json);
 
     }
 
