@@ -53,14 +53,14 @@ class RegistrationRepositoryTest {
 
     @Test
     @DisplayName("Should get an registration by id")
-    void findByIdTest(){
+    void getByIdTest(){
 
         Registration registrationClassAttribute = createNewRegistration(1234L);
         entityManager.persist(registrationClassAttribute);
 
-        Optional<Registration> foundRegistration = registrationRepository.findById(registrationClassAttribute.getId());
+        Registration foundRegistration = registrationRepository.getById(registrationClassAttribute.getId());
 
-        assertNotNull(foundRegistration.isPresent());
+        assertNotNull(foundRegistration);
     }
 
     @Test
@@ -81,18 +81,14 @@ class RegistrationRepositoryTest {
         entityManager.persist(registrationClassAttribute);
 
         Registration foundRegistration = entityManager
-                .find(Registration.class, registrationClassAttribute.getCpf());
+                .find(Registration.class, registrationClassAttribute.getId());
         registrationRepository.delete(foundRegistration);
 
         Registration deleteRegistration = entityManager
-                .find(Registration.class, registrationClassAttribute.getCpf());
+                .find(Registration.class, registrationClassAttribute.getId());
 
         assertNull(deleteRegistration);
     }
-
-
-
-
 
     public static Registration createNewRegistration(Long cpf ) {
         return Registration.builder()

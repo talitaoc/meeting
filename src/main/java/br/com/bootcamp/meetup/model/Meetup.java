@@ -16,8 +16,6 @@ import java.time.LocalDateTime;
 public class Meetup {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MEETUP_SEQ")
-//    @SequenceGenerator(name = "MEETUP_SEQ", sequenceName = "MEETUP_SEQ")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

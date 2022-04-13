@@ -20,8 +20,6 @@ public class Registration {
 
     @Id
     @Column(name = "registration_id")
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "REGISTRATION_PERSON_SEQ")
-//    @SequenceGenerator(name = "REGISTRATION_PERSON_SEQ", sequenceName = "REGISTRATION_PERSON_SEQ")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

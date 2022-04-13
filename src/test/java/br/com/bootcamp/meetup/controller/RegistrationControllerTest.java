@@ -5,6 +5,7 @@ import br.com.bootcamp.meetup.controller.dtos.RegistrationDTO;
 import br.com.bootcamp.meetup.controller.resource.RegistrationController;
 import br.com.bootcamp.meetup.model.Registration;
 import br.com.bootcamp.meetup.service.RegistrationService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
@@ -71,12 +72,29 @@ public class RegistrationControllerTest {
                 .content(json);
 
         mockMvc //lombok deixa os atributos finais
-                .perform(requestBuilder) //busca a URL do endpoint /meetup verbo POST
+                .perform(requestBuilder) //busca a URL do endpoint /api/registration verbo POST
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("name").value(registrationDTO.getName()))
                 .andExpect(jsonPath("cpf").value(registrationDTO.getCpf()))
                 .andExpect(jsonPath("groupName").value(registrationDTO.getGroupName()));
 
+    }
+
+    @Test
+    @DisplayName("Should throw an exception when try to create a new registration with an registration already exists ")
+    void createInvalidRegistrationTest() throws Exception {
+
+        String json = new ObjectMapper().writeValueAsString(new RegistrationDTO());
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post(API_REGISTRATION)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mockMvc
+                .perform(requestBuilder)
+                .andExpect(status().isBadRequest());
 
     }
 
