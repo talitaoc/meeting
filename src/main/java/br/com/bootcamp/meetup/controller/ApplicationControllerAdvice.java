@@ -1,5 +1,6 @@
-package br.com.bootcamp.meetup.controller.exceptions;
+package br.com.bootcamp.meetup.controller;
 
+import br.com.bootcamp.meetup.controller.exceptions.ApiErrors;
 import br.com.bootcamp.meetup.exception.BusinessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

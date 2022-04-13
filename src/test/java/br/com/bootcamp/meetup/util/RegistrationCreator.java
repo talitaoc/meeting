@@ -1,9 +1,7 @@
 package br.com.bootcamp.meetup.util;
 
-import br.com.bootcamp.meetup.dtos.RegistrationDTO;
 import br.com.bootcamp.meetup.model.Registration;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -6,9 +6,10 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
-@Table(name = "REGISTRATION_PERSON", schema = "registration_crud")
+@Table
 @Getter
 @Setter
 @ToString
@@ -18,19 +19,31 @@ import java.time.LocalDateTime;
 public class Registration {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "REGISTRATION_PERSON_SEQ")
-    @SequenceGenerator(name = "REGISTRATION_PERSON_SEQ", sequenceName = "registration_crud.REGISTRATION_PERSON_SEQ")
+    @Column(name = "registration_id")
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "REGISTRATION_PERSON_SEQ")
+//    @SequenceGenerator(name = "REGISTRATION_PERSON_SEQ", sequenceName = "REGISTRATION_PERSON_SEQ")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, unique = false, length = 50)
+
+    @Column(name = "person_name")
     private String name;
-    @Column(nullable = false, unique = true, length = 11)
+
+    @Column(name = "cpf")
     private Long cpf;
+
     @Column
     @CreatedDate
     private LocalDateTime createdDate;
+
     @Column
     @LastModifiedDate
     private LocalDateTime lastModifiedDate;
-    @Column(nullable = false, unique = false, length = 50)
+
+    @Column(name = "groupName")
     private String groupName;
+
+    @OneToMany(mappedBy = "registration")
+    private List<Meetup> meetupList;
+
+
 }

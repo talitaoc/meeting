@@ -1,4 +1,4 @@
-package br.com.bootcamp.meetup.dtos;
+package br.com.bootcamp.meetup.controller.dtos;
 
 import lombok.*;
 

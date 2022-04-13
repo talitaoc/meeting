@@ -14,6 +14,7 @@ import javax.transaction.Transactional;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -64,4 +65,8 @@ public class RegistrationService {
         registrationRepository.delete(findById(id));
 
     }
+
+//    public Optional<Registration> getRegistrationByRegistrationAttribute(String registrationAttribute){
+//        return registrationRepository.findByRegistration(registrationAttribute);
+//    }
 }

@@ -1,13 +1,13 @@
 package br.com.bootcamp.meetup.controller;
 
 import br.com.bootcamp.meetup.configuration.ModelMapperConfiguration;
-import br.com.bootcamp.meetup.dtos.RegistrationDTO;
+import br.com.bootcamp.meetup.controller.dtos.RegistrationDTO;
+import br.com.bootcamp.meetup.controller.resource.RegistrationController;
 import br.com.bootcamp.meetup.model.Registration;
 import br.com.bootcamp.meetup.service.RegistrationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,7 +39,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 @AutoConfigureMockMvc
 public class RegistrationControllerTest {
 
-    static String MEETUP = "/meetup";
+    static String API_REGISTRATION = "/api/registration";
 
     @Autowired
     private MockMvc mockMvc;
@@ -65,7 +65,7 @@ public class RegistrationControllerTest {
         String json = new ObjectMapper().writeValueAsString(registrationDTO);
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders //configuração da requisição
-                .post(MEETUP)
+                .post(API_REGISTRATION)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(json);

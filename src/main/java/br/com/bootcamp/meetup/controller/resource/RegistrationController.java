@@ -1,4 +1,4 @@
-package br.com.bootcamp.meetup.controller;
+package br.com.bootcamp.meetup.controller.resource;
 
 import br.com.bootcamp.meetup.controller.dtos.RegistrationDTO;
 import br.com.bootcamp.meetup.model.Registration;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/meetup")
+@RequestMapping("/api/registration")
 public class RegistrationController {
 
     private final RegistrationService registrationService;
@@ -48,7 +48,7 @@ public class RegistrationController {
         return new ResponseEntity<>(registrationDTO, HttpStatus.OK);
     }
 
-    @GetMapping(path = "{id}")
+    @GetMapping(path = "{id}") //fazer com cpf
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<RegistrationDTO> findById(@PathVariable(value = "id", required = false) Long id){
 
