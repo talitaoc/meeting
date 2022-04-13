@@ -1,6 +1,6 @@
 package br.com.bootcamp.meetup.controller;
 
-import br.com.bootcamp.meetup.dtos.RegistrationDTO;
+import br.com.bootcamp.meetup.controller.dtos.RegistrationDTO;
 import br.com.bootcamp.meetup.model.Registration;
 import br.com.bootcamp.meetup.service.RegistrationService;
 import lombok.RequiredArgsConstructor;
