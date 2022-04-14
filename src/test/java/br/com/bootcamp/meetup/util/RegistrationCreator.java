@@ -1,5 +1,6 @@
 package br.com.bootcamp.meetup.util;
 
+import br.com.bootcamp.meetup.controller.dtos.RegistrationDTO;
 import br.com.bootcamp.meetup.model.Registration;
 
 import java.util.ArrayList;
@@ -7,12 +8,21 @@ import java.util.List;
 
 public class RegistrationCreator {
 
-    public static Registration createRegistrationSaved() {
+    public static Registration createRegistration() {
 
         return Registration.builder()
                 .name("Lola")
                 .cpf(1234L)
-                .groupName("Meetup kitten")
+                .groupName("Cat")
+                .build();
+    }
+
+    public static RegistrationDTO createRegistrationDTO() {
+
+        return RegistrationDTO.builder()
+                .name("Lola")
+                .cpf(1234L)
+                .groupName("Cat")
                 .build();
     }
 
@@ -22,7 +32,7 @@ public class RegistrationCreator {
                 .id(1L)
                 .name("Lola")
                 .cpf(1234L)
-                .groupName("Meetup kitten")
+                .groupName("Cat")
                 .build();
     }
 
@@ -32,13 +42,14 @@ public class RegistrationCreator {
                 .id(1L)
                 .name("Lince")
                 .cpf(1234L)
-                .groupName("Meetup kitten")
+                .groupName("Cat")
                 .build();
     }
 
+
     public static List<Registration> ListRegistration(){
 
-        List<Registration> lista = new ArrayList<>(List.of(createRegistrationSaved()));
+        List<Registration> lista = new ArrayList<>(List.of(createRegistration()));
 
         return lista;
     }

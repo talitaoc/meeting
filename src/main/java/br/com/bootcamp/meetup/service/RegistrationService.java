@@ -41,12 +41,12 @@ public class RegistrationService {
         return registrationRepository.save(registration);
     }
 
-    public Registration findById(Long id){
+    public Registration findByCpf(Long cpf){
 
-        if(Objects.isNull(id)){
+        if(Objects.isNull(cpf)){
           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Registration not found.");
         }
-        return registrationRepository.getById(id);
+        return registrationRepository.getByCpf(cpf);
     }
 
     public List<Registration> findAllRegistration(){
@@ -57,16 +57,16 @@ public class RegistrationService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public void delete(Long cpf) {
 
-        if(Objects.isNull(id)){
+        if(Objects.isNull(cpf)){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Registration not found.");
         }
-        registrationRepository.delete(findById(id));
+        registrationRepository.delete(findByCpf(cpf));
 
     }
 
-//    public Optional<Registration> getRegistrationByRegistrationAttribute(String registrationAttribute){
-//        return registrationRepository.findByRegistration(registrationAttribute);
-//    }
+    public Optional<Registration> getRegistrationByRegistrationAttribute(String registrationAttribute){
+        return registrationRepository.findByRegistration(registrationAttribute);
+    }
 }

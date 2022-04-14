@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,7 +26,7 @@ public class RegistrationController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<RegistrationDTO> save(@RequestBody RegistrationDTO registrationDTO){
+    public ResponseEntity<RegistrationDTO> save(@RequestBody @Valid RegistrationDTO registrationDTO){
 
         Registration registration = modelMapper.map(registrationDTO,Registration.class);
         registration = registrationService.save(registration);
@@ -48,21 +49,22 @@ public class RegistrationController {
         return new ResponseEntity<>(registrationDTO, HttpStatus.OK);
     }
 
-    @GetMapping(path = "{id}") //fazer com cpf
+    @GetMapping(path = "{cpf}") //fazer com cpf
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<RegistrationDTO> findById(@PathVariable(value = "id", required = false) Long id){
+    public ResponseEntity<RegistrationDTO> findByCpf(@PathVariable(value = "cpf", required = false) Long cpf){
 
-        Registration registration = registrationService.findById(id);
+        Registration registration = registrationService.findByCpf(cpf);
         
         return new ResponseEntity<>(modelMapper.map(registration,RegistrationDTO.class), HttpStatus.OK);
 
     }
 
     @PutMapping
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<RegistrationDTO> replace(@RequestBody RegistrationDTO registrationDTO){
 
         Registration registration = modelMapper.map(registrationDTO,Registration.class);
-        registration = registrationService.findById(registration.getId());
+        registration = registrationService.findByCpf(registration.getCpf());
 
         registration.setName(registration.getName());
         registration.setCpf(registration.getCpf());
@@ -72,7 +74,7 @@ public class RegistrationController {
 
         log.info("Update was a success {} ",registration);
 
-        return new ResponseEntity<>(modelMapper.map(registration, RegistrationDTO.class), HttpStatus.CREATED);
+        return new ResponseEntity<>(modelMapper.map(registration, RegistrationDTO.class), HttpStatus.OK);
 
     }
 

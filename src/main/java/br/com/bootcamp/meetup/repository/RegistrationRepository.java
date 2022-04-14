@@ -9,7 +9,12 @@ import java.util.Optional;
 public interface RegistrationRepository extends JpaRepository<Registration, Long> {
 
     boolean existsById(Long id);
+
     Registration getById(Long id);
-    boolean existsByCpf(Long id);
-    //Optional<Registration> findByRegistration(String registrationAttribute);
+
+    boolean existsByCpf(Long cpf);
+
+    Registration getByCpf(Long cpf);
+
+    Optional<Registration> findByRegistration(String registrationAttribute);
 }

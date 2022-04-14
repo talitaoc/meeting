@@ -67,7 +67,7 @@ public class RegistrationServiceTest {
 
         when(registrationRepository.getById(createValidRegistration().getId())).thenReturn(registration);
 
-        Registration foundRegistration = registrationService.findById(createValidRegistration().getId());
+        Registration foundRegistration = registrationService.findByCpf(createValidRegistration().getId());
 
         assertNotNull(foundRegistration);
 
@@ -81,7 +81,7 @@ public class RegistrationServiceTest {
 
         when(registrationRepository.existsById(any())).thenReturn(false);
 
-        assertThrows(ResponseStatusException.class,() -> registrationService.findById(any()));
+        assertThrows(ResponseStatusException.class,() -> registrationService.findByCpf(any()));
 
         verify(registrationRepository,never()).getById(any());
 
@@ -93,7 +93,7 @@ public class RegistrationServiceTest {
 
         when(registrationRepository.existsById(null)).thenReturn(false);
 
-        assertThrows(ResponseStatusException.class,() -> registrationService.findById(null));
+        assertThrows(ResponseStatusException.class,() -> registrationService.findByCpf(null));
 
         verify(registrationRepository,never()).getById(null);
 
