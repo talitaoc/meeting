@@ -16,5 +16,5 @@ public interface RegistrationRepository extends JpaRepository<Registration, Long
 
     Registration getByCpf(Long cpf);
 
-    Optional<Registration> findByRegistration(String registrationAttribute);
+    Registration findByRegistration(String registrationAttribute);
 }

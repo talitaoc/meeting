@@ -66,7 +66,7 @@ public class RegistrationService {
 
     }
 
-    public Optional<Registration> getRegistrationByRegistrationAttribute(String registrationAttribute){
+    public Registration getRegistrationByRegistrationAttribute(String registrationAttribute){
         return registrationRepository.findByRegistration(registrationAttribute);
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 public interface MeetupRepository extends JpaRepository<Meetup, Long>{
 
     Page<Meetup> findByRegistration(Registration registration, Pageable pageable);
+    boolean findRegistration(Registration registration,Pageable pageable);
 
     @Query( value = " select l from Meetup as l join l.registration as b where b.registration = :registration or l.event =:event ")
     Page<Meetup> findByRegistrationOnMeetup(@Param("registration") String registration,

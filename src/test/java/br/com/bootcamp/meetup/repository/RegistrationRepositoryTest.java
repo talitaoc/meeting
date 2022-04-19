@@ -1,6 +1,7 @@
 package br.com.bootcamp.meetup.repository;
 
 import br.com.bootcamp.meetup.model.Registration;
+import br.com.bootcamp.meetup.util.RegistrationCreator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,7 +11,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,7 +31,7 @@ class RegistrationRepositoryTest {
 
         Long cpf = 1234L;
 
-        Registration registrationClassAttribute = createNewRegistration(cpf);
+        Registration registrationClassAttribute = RegistrationCreator.createNewRegistration(cpf);
         entityManager.persist(registrationClassAttribute);
 
         boolean exists = registrationRepository.existsByCpf(cpf);
@@ -55,7 +55,7 @@ class RegistrationRepositoryTest {
     @DisplayName("Should get an registration by id")
     void getByIdTest(){
 
-        Registration registrationClassAttribute = createNewRegistration(1234L);
+        Registration registrationClassAttribute = RegistrationCreator.createNewRegistration(1234L);
         entityManager.persist(registrationClassAttribute);
 
         Registration foundRegistration = registrationRepository.getById(registrationClassAttribute.getId());
@@ -67,7 +67,7 @@ class RegistrationRepositoryTest {
     @DisplayName("Should save an registration")
     void saveRegistrationTest(){
 
-        Registration registrationClassAttribute =  createNewRegistration(1234L);
+        Registration registrationClassAttribute =  RegistrationCreator.createNewRegistration(1234L);
         Registration savedRegistration = registrationRepository.save(registrationClassAttribute);
 
         assertNotNull(savedRegistration.getCpf());
@@ -77,7 +77,7 @@ class RegistrationRepositoryTest {
     @DisplayName("Should delete an registration from the base")
     void deleteRegistrationTest(){
 
-        Registration registrationClassAttribute = createNewRegistration(1234L);
+        Registration registrationClassAttribute = RegistrationCreator.createNewRegistration(1234L);
         entityManager.persist(registrationClassAttribute);
 
         Registration foundRegistration = entityManager
@@ -88,14 +88,6 @@ class RegistrationRepositoryTest {
                 .find(Registration.class, registrationClassAttribute.getId());
 
         assertNull(deleteRegistration);
-    }
-
-    public static Registration createNewRegistration(Long cpf ) {
-        return Registration.builder()
-                .name("Lola")
-                .cpf(cpf)
-                .groupName("Meetup kitten")
-                .build();
     }
 
 }

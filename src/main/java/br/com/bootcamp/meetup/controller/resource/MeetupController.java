@@ -27,14 +27,13 @@ public class MeetupController {
 
     private final MeetupService meetupService;
     private final RegistrationService registrationService;
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     private Long create(@RequestBody MeetupDTO meetupDTO){
 
-        Registration registration = registrationService.getRegistrationByRegistrationAttribute(meetupDTO.getRegistrationAttribute())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
+        Registration registration = registrationService.getRegistrationByRegistrationAttribute(meetupDTO.getRegistrationAttribute());
 
         Meetup meetup = Meetup.builder()
                 .registration(registration)
@@ -44,6 +43,7 @@ public class MeetupController {
 
         meetup = meetupService.save(meetup);
         return meetup.getId();
+
     }
 
     @GetMapping

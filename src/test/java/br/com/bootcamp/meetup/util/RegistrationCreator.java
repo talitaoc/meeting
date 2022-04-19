@@ -53,6 +53,14 @@ public class RegistrationCreator {
 
         return lista;
     }
+
+    public static Registration createNewRegistration(Long cpf ) {
+        return Registration.builder()
+                .name("Lola")
+                .cpf(cpf)
+                .groupName("Meetup kitten")
+                .build();
+    }
 }
 
 

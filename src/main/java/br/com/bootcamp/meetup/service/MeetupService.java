@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -31,10 +32,19 @@ public class MeetupService {
     }
 
     public Optional<Meetup> findMeetupById(Long id){
+
+        if(Objects.isNull(id)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Meetup not found.");
+        }
         return meetupRepository.findById(id);
     }
 
     public Page<Meetup> getRegistrationByMeetup(Registration registration, Pageable pageable){
+
+        if(meetupRepository.findRegistration(registration,pageable)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Registrations not found");
+        }
+
         return meetupRepository.findByRegistration(registration, pageable);
     }
 
@@ -43,14 +53,30 @@ public class MeetupService {
     }
 
     public Meetup update(Meetup update){
+
+        if(Objects.isNull(update)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Meetup not found.");
+        }
+
         return meetupRepository.save(update);
     }
 
     public Meetup findByEvent(String event) {
+
+        if(Objects.isNull(event)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Meetup not found.");
+        }
+
         return meetupRepository.getMeetupByEvent(event);
     }
 
+    @Transactional
     public void delete(Meetup meetup){
+
+        if(Objects.isNull(meetup)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Meetup not found.");
+        }
+
         meetupRepository.delete(meetup);
     }
 }

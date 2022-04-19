@@ -2,6 +2,7 @@ package br.com.bootcamp.meetup.service;
 
 import br.com.bootcamp.meetup.model.Registration;
 import br.com.bootcamp.meetup.repository.RegistrationRepository;
+import br.com.bootcamp.meetup.util.RegistrationCreator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,10 +31,10 @@ public class RegistrationServiceTest {
     @DisplayName("Save a registration successful.")
     void saveRegistrationWhenSuccessful(){
 
-        Registration registrationToBeSaved = createValidRegistration();
+        Registration registrationToBeSaved = RegistrationCreator.createNewRegistrationValid();
 
-        when(registrationRepository.existsById(createValidRegistration().getId())).thenReturn(false);
-        when(registrationRepository.save(registrationToBeSaved)).thenReturn(createValidRegistration());
+        when(registrationRepository.existsById(RegistrationCreator.createNewRegistrationValid().getId())).thenReturn(false);
+        when(registrationRepository.save(registrationToBeSaved)).thenReturn(RegistrationCreator.createNewRegistrationValid());
 
         Registration savedRegistration = registrationService.save(registrationToBeSaved);
 
@@ -51,27 +52,27 @@ public class RegistrationServiceTest {
     @DisplayName("Registration already exists throw error")
     void whenRegistrationAlreadyExistsThrowError(){
 
-        Registration registration = createValidRegistration();
+        Registration registration = RegistrationCreator.createNewRegistrationValid();
 
-        when(registrationRepository.existsById(createValidRegistration().getId())).thenReturn(true);
+        when(registrationRepository.existsByCpf(RegistrationCreator.createNewRegistrationValid().getCpf())).thenReturn(true);
 
         assertThrows(ResponseStatusException.class, () -> registrationService.save(registration));
 
     }
 
     @Test
-    @DisplayName("Should get an registration by id.")
-    void FoundByIdAndReturnRegistration(){
+    @DisplayName("Should get an registration by cpf.")
+    void foundByCpfAndReturnRegistration(){
 
-        Registration registration = createValidRegistration();
+        Registration registration = RegistrationCreator.createNewRegistrationValid();
 
-        when(registrationRepository.getById(createValidRegistration().getId())).thenReturn(registration);
+        when(registrationRepository.getByCpf(RegistrationCreator.createNewRegistrationValid().getCpf())).thenReturn(registration);
 
-        Registration foundRegistration = registrationService.findByCpf(createValidRegistration().getId());
+        Registration foundRegistration = registrationService.findByCpf(RegistrationCreator.createNewRegistrationValid().getCpf());
 
         assertNotNull(foundRegistration);
 
-        verify(registrationRepository, times(1)).getById(createValidRegistration().getId());
+        verify(registrationRepository, times(1)).getByCpf(RegistrationCreator.createNewRegistrationValid().getCpf());
 
     }
 
@@ -79,11 +80,11 @@ public class RegistrationServiceTest {
     @DisplayName("Should return error when id doesn't exists.")
     void whenRegistrationNotFoundByIdThrowError(){
 
-        when(registrationRepository.existsById(any())).thenReturn(false);
+        when(registrationRepository.existsByCpf(any())).thenReturn(false);
 
         assertThrows(ResponseStatusException.class,() -> registrationService.findByCpf(any()));
 
-        verify(registrationRepository,never()).getById(any());
+        verify(registrationRepository,never()).getByCpf(any());
 
     }
 
@@ -91,11 +92,11 @@ public class RegistrationServiceTest {
     @DisplayName("When null should return error when id doesn't exists.")
     void whenNullShouldReturnError(){
 
-        when(registrationRepository.existsById(null)).thenReturn(false);
+        when(registrationRepository.existsByCpf(null)).thenReturn(false);
 
         assertThrows(ResponseStatusException.class,() -> registrationService.findByCpf(null));
 
-        verify(registrationRepository,never()).getById(null);
+        verify(registrationRepository,never()).getByCpf(null);
 
     }
 
@@ -103,10 +104,10 @@ public class RegistrationServiceTest {
     @DisplayName("Update a Registration Successful")
     void UpdateRegistrationWhenSuccessful(){
 
-        Registration registrationToBeUpdate = createValidRegistration();
+        Registration registrationToBeUpdate = RegistrationCreator.createNewRegistrationValid();
 
-        when(registrationRepository.existsById(createValidRegistration().getId())).thenReturn(true);
-        when(registrationRepository.save(registrationToBeUpdate)). thenReturn(createValidRegistration());
+        when(registrationRepository.existsById(RegistrationCreator.createNewRegistrationValid().getId())).thenReturn(true);
+        when(registrationRepository.save(registrationToBeUpdate)). thenReturn(RegistrationCreator.createNewRegistrationValid());
 
         Registration replaceRegistration = registrationService.update(registrationToBeUpdate);
 
@@ -125,7 +126,7 @@ public class RegistrationServiceTest {
 
         Registration registration = null;
 
-        when(registrationRepository.existsById(null)).thenReturn(false);
+        when(registrationRepository.existsByCpf(null)).thenReturn(false);
 
         assertThrows(ResponseStatusException.class, ()->registrationService.update(registration));
 
@@ -137,11 +138,11 @@ public class RegistrationServiceTest {
     @DisplayName("Delete a registration successful")
     void whenDeleteRegistrationSuccessful(){
 
-        Registration registrationToBeDelete = createValidRegistration();
+        Registration registrationToBeDelete = RegistrationCreator.createNewRegistrationValid();
 
-        when(registrationRepository.getById(registrationToBeDelete.getId())).thenReturn(registrationToBeDelete);
+        when(registrationRepository.getByCpf(registrationToBeDelete.getCpf())).thenReturn(registrationToBeDelete);
 
-        assertDoesNotThrow(()-> registrationService.delete(registrationToBeDelete.getId()));
+        assertDoesNotThrow(()-> registrationService.delete(registrationToBeDelete.getCpf()));
 
        verify(registrationRepository, times(1)).delete(registrationToBeDelete);
 
@@ -160,14 +161,4 @@ public class RegistrationServiceTest {
         verify(registrationRepository,never()).delete(registration);
     }
 
-
-    public Registration createValidRegistration(){
-
-        return Registration.builder()
-                .id(1L)
-                .name("Lola")
-                .cpf(1234L)
-                .groupName("001")
-                .build();
-    }
 }
