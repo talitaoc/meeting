@@ -42,7 +42,7 @@ class RegistrationRepositoryTest {
 
     @Test
     @DisplayName("Should return false when doesn't exists an registration attribute with a registration already created")
-    void returnFalseWhenRegistrationAttributeDoesntExists(){
+    void returnFalseWhenRegistrationAttributeDoesNotExists(){
 
         Long cpf = 1234L;
 

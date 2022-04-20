@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -20,9 +19,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.locks.ReentrantLock;
+
 
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,8 +38,8 @@ public class MeetupServiceTest {
 
 
     @Test
-    @DisplayName("Save a meetup successful")
-    void saveMeetupWhenSuccessful(){
+    @DisplayName("Create a meetup successful")
+    void createMeetupWhenSuccessful(){
 
         Meetup meetupToBeSaved = MeetupCreator.createValidMeetup();
 
@@ -110,7 +108,8 @@ public class MeetupServiceTest {
 
         Page<Meetup> page = new PageImpl<Meetup>(Arrays.asList(meetup),PageRequest.of(0,10),1);
 
-        when(meetupRepository.findByRegistration(any(Registration.class),any(PageRequest.class))).thenReturn(page);
+        when(meetupRepository.existsByRegistration(registration)).thenReturn(true);
+        when(meetupRepository.findByRegistration(registration,pageRequest)).thenReturn(page);
 
         Page<Meetup> result = meetupService.getRegistrationByMeetup(registration,pageRequest);
 
@@ -120,12 +119,115 @@ public class MeetupServiceTest {
 
     }
 
-    //TODO whenNotFoundRegistrationByMeetupThrowError
-    //TODO updateMeetupSuccessful
-    //TODO whenUpdateMeetupNotExistThrowError
-    //TODO foundByEventSuccessful
-    //TODO whenEventNotFoundThrowError
-    //TODO foundMeetupAndDeleteSuccessful
+    @Test
+    @DisplayName("When Not found Registration by Meetup throw error")
+    void whenNotFoundRegistrationByMeetupThrowError(){
+
+        Registration registration = null;
+        PageRequest pageRequest = null;
+
+        when(meetupRepository.existsByRegistration(any(Registration.class))).thenReturn(false);
+
+        assertThrows(ResponseStatusException.class,()-> meetupService.getRegistrationByMeetup(null, null));
+
+        verify(meetupRepository,never()).findByRegistration(registration,pageRequest);
+
+    }
+
+    @Test
+    @DisplayName("Update meetup successful")
+    void updateMeetupSuccessful(){
+
+        Meetup meetupToBeUpdate = MeetupCreator.createValidMeetup();
+
+        when(meetupRepository.existsByEvent(meetupToBeUpdate.getEvent())).thenReturn(true);
+        when(meetupRepository.save(meetupToBeUpdate)).thenReturn(MeetupCreator.createValidMeetup());
+
+        Meetup updatedMeetup = meetupService.update(meetupToBeUpdate);
+
+        assertNotNull(updatedMeetup);
+        assertNotNull(updatedMeetup.getId());
+        assertNotNull(updatedMeetup.getEvent());
+        assertNotNull(updatedMeetup.getMeetupDate());
+        assertNotNull(updatedMeetup.getRegistration());
+        assertNotNull(updatedMeetup.getRegistered());
+
+        verify(meetupRepository,times(1)).save(meetupToBeUpdate);
+
+    }
+
+    @Test
+    @DisplayName("When update meetup not found throw error")
+    void whenUpdateMeetupNotExistThrowError(){
+
+        Meetup meetup = null;
+
+        when(meetupRepository.existsByEvent(null)).thenReturn(false);
+
+        assertThrows(ResponseStatusException.class,()-> meetupService.update(null));
+
+        verify(meetupRepository,never()).save(meetup);
+
+    }
+
+    @Test
+    @DisplayName("Found meetup by event return meetup successful")
+    void foundByEventReturnMeetupSuccessful(){
+
+        Meetup meetup = MeetupCreator.createValidMeetup();
+
+        when(meetupRepository.getMeetupByEvent(meetup.getEvent())).thenReturn(meetup);
+
+        Meetup foundMeetup = meetupService.findByEvent(meetup.getEvent());
+
+        assertNotNull(foundMeetup);
+
+        verify(meetupRepository,times(1)).getMeetupByEvent(meetup.getEvent());
+
+    }
+
+    @Test
+    @DisplayName("When event not found throw error")
+    void whenEventNotFoundThrowError(){
+
+
+        when(meetupRepository.getMeetupByEvent(null)).thenReturn(null);
+
+        assertThrows(ResponseStatusException.class,()-> meetupService.findByEvent(null));
+
+        verify(meetupRepository,never()).getMeetupByEvent(null);
+
+
+    }
+
+    @Test
+    @DisplayName("Delete meetup successful")
+    void whenDeleteMeetupSuccessful(){
+
+        Meetup meetupToBeDelete = MeetupCreator.createValidMeetup();
+
+        when(meetupRepository.getMeetupByEvent(meetupToBeDelete.getEvent())).thenReturn(meetupToBeDelete);
+
+        assertDoesNotThrow(()-> meetupService.delete(meetupToBeDelete));
+
+        verify(meetupRepository,times(1)).delete(meetupToBeDelete);
+
+    }
+
+    @Test
+    @DisplayName("When meetup not found for delete throw error")
+    void whenNotFoundMeetupForDeleteThrowError(){
+
+        Meetup meetupNotFound = null;
+
+        when(meetupRepository.getMeetupByEvent(null)).thenReturn(null);
+
+        assertThrows(ResponseStatusException.class, ()-> meetupService.delete(null));
+
+        verify(meetupRepository,never()).delete(meetupNotFound);
+
+    }
+
     //TODO whenNotFoundMeetupForDeleteThrowError
 
 

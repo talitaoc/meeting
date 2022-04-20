@@ -41,7 +41,7 @@ public class MeetupService {
 
     public Page<Meetup> getRegistrationByMeetup(Registration registration, Pageable pageable){
 
-        if(meetupRepository.findRegistration(registration,pageable)){
+        if(!meetupRepository.existsByRegistration(registration)){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Registrations not found");
         }
 

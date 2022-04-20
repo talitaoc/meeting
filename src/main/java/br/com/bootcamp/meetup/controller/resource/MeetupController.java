@@ -14,7 +14,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -68,13 +67,17 @@ public class MeetupController {
 
    @PutMapping
    @ResponseStatus(HttpStatus.OK)
-    public MeetupDTO update(@RequestBody MeetupFilterDTO filterDTO){
+    public MeetupDTO update(@RequestBody MeetupDTO meetupDTO){
 
-        Meetup meetup = modelMapper.map(filterDTO, Meetup.class);
+
+        Registration registration = registrationService.getRegistrationByRegistrationAttribute(meetupDTO.getRegistrationAttribute());
+
+        Meetup meetup = modelMapper.map(meetupDTO, Meetup.class);
         meetup = meetupService.findByEvent(meetup.getEvent());
 
         meetup.setEvent(meetup.getEvent());
-        meetup.setRegistration(meetup.getRegistration());
+        meetup.setRegistration(registration);
+        meetup.setMeetupDate(LocalDateTime.now());
         meetup.setRegistered(meetup.getRegistered());
 
         meetupService.save(meetup);
@@ -85,6 +88,7 @@ public class MeetupController {
    @DeleteMapping
    @ResponseStatus(HttpStatus.NO_CONTENT)
    public void delete(MeetupFilterDTO filterDTO){
+
         meetupService.delete(modelMapper.map(filterDTO, Meetup.class));
    }
 
