@@ -68,7 +68,7 @@ public class RegistrationController {
 
         registration.setName(registration.getName());
         registration.setCpf(registration.getCpf());
-        registration.setGroupName(registration.getGroupName());
+        registration.setRegistration(registration.getRegistration());
 
         registrationService.save(registration);
 

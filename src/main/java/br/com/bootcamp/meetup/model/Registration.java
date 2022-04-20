@@ -37,8 +37,8 @@ public class Registration {
     @LastModifiedDate
     private LocalDateTime lastModifiedDate;
 
-    @Column(name = "groupName")
-    private String groupName;
+    @Column(name = "registration")
+    private String registration;
 
     @OneToMany(mappedBy = "registration")
     private List<Meetup> meetupList;

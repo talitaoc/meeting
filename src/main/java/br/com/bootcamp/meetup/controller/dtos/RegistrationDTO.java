@@ -14,7 +14,7 @@ public class RegistrationDTO {
     @NotNull
     private String name;
     @NotNull
-    private String groupName;
+    private String registration;
     @NotNull
     private Long cpf;
 
