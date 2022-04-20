@@ -72,7 +72,7 @@ public class RegistrationControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("name").value(registrationDTO.getName()))
                 .andExpect(jsonPath("cpf").value(registrationDTO.getCpf()))
-                .andExpect(jsonPath("groupName").value(registrationDTO.getGroupName()));
+                .andExpect(jsonPath("registration").value(registrationDTO.getRegistration()));
     }
 
     @Test
@@ -111,7 +111,7 @@ public class RegistrationControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("name").value(registration.getName()))
                 .andExpect(jsonPath("cpf").value(registration.getCpf()))
-                .andExpect(jsonPath("groupName").value(registration.getGroupName()));
+                .andExpect(jsonPath("registration").value(registration.getRegistration()));
     }
 
     @Test
@@ -189,7 +189,7 @@ public class RegistrationControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("name").value(replacingRegistration.getName()))
                 .andExpect(jsonPath("cpf").value(cpf))
-                .andExpect(jsonPath("groupName").value(replacingRegistration.getGroupName()));
+                .andExpect(jsonPath("registration").value(replacingRegistration.getRegistration()));
 
     }
 

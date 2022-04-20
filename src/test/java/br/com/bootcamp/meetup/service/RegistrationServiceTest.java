@@ -42,7 +42,7 @@ public class RegistrationServiceTest {
         assertNotNull(savedRegistration.getId());
         assertEquals(savedRegistration.getName(),registrationToBeSaved.getName());
         assertNotNull(savedRegistration.getCpf());
-        assertEquals(savedRegistration.getGroupName(),registrationToBeSaved.getGroupName());
+        assertEquals(savedRegistration.getRegistration(),registrationToBeSaved.getRegistration());
 
         verify(registrationRepository,times(1)).save(registrationToBeSaved);
 
@@ -115,7 +115,7 @@ public class RegistrationServiceTest {
         assertNotNull(replaceRegistration.getId());
         assertNotNull(replaceRegistration.getCpf());
         assertEquals(replaceRegistration.getName(),registrationToBeUpdate.getName());
-        assertEquals(replaceRegistration.getGroupName(),registrationToBeUpdate.getGroupName());
+        assertEquals(replaceRegistration.getRegistration(),registrationToBeUpdate.getRegistration());
 
         verify(registrationRepository,times(1)).save(registrationToBeUpdate);
 

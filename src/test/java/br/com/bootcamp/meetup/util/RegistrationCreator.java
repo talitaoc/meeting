@@ -13,7 +13,7 @@ public class RegistrationCreator {
         return Registration.builder()
                 .name("Lola")
                 .cpf(1234L)
-                .groupName("Cat")
+                .registration("Cat")
                 .build();
     }
 
@@ -22,7 +22,7 @@ public class RegistrationCreator {
         return RegistrationDTO.builder()
                 .name("Lola")
                 .cpf(1234L)
-                .groupName("Cat")
+                .registration("Cat")
                 .build();
     }
 
@@ -32,7 +32,7 @@ public class RegistrationCreator {
                 .id(1L)
                 .name("Lola")
                 .cpf(1234L)
-                .groupName("Cat")
+                .registration("Cat")
                 .build();
     }
 
@@ -42,7 +42,7 @@ public class RegistrationCreator {
                 .id(1L)
                 .name("Lince")
                 .cpf(1234L)
-                .groupName("Cat")
+                .registration("Cat")
                 .build();
     }
 
@@ -58,7 +58,7 @@ public class RegistrationCreator {
         return Registration.builder()
                 .name("Lola")
                 .cpf(cpf)
-                .groupName("Meetup kitten")
+                .registration("Meetup kitten")
                 .build();
     }
 }
