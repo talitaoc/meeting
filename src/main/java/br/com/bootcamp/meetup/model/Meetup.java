@@ -22,7 +22,7 @@ public class Meetup {
     @Column
     private String event;
 
-    @JoinColumn(name = "id_registration")
+    @JoinColumn(name = "registration_id")
     @ManyToOne
     private Registration registration;
 
