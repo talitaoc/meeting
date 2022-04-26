@@ -40,6 +40,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 @Slf4j
 @ExtendWith(SpringExtension.class)
@@ -82,10 +83,9 @@ public class MeetupControllerTest {
 
         mockMvc
                 .perform(requestBuilder)
-                .andExpect(status().isCreated());
-                //.andExpect(jsonPath("registrationAttribute").value(meetupDTO.getRegistrationAttribute()))
-                //.andExpect(jsonPath("event").value(meetupDTO.getEvent()));
-                //.andExpect(jsonPath("registration").value(meetupDTO.getRegistration()));
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("event").value(meetupDTO.getEvent()))
+                .andExpect(jsonPath("registration").value(meetupDTO.getRegistration()));
 
     }
 
@@ -111,11 +111,9 @@ public class MeetupControllerTest {
 
     @Test
     @DisplayName("Should get the list of meetup from a registration")
-    void getMeetupTest() throws Exception {
+    void getListMeetupTest() throws Exception {
 
         Meetup meetup = MeetupCreator.createValidMeetup();
-        PageRequest pageRequest = PageRequest.of(0,10);
-        MeetupFilterDTO meetupFilterDTO = MeetupCreator.createMeetupFilterDTO();
 
         Page<Meetup> page = new PageImpl<Meetup>(Arrays.asList(meetup),PageRequest.of(0,10),1);
 
@@ -131,11 +129,116 @@ public class MeetupControllerTest {
 
     }
 
-    //TODO whenGetMeetupNotFound
-    //TODO whenFindAllMeetup
-    //TODO deleteMeetupSuccessful
-    //TODO whenDeleteMeetupNotExistThrowError
-    //TODO updateMeetupSuccessful
+    @Test
+    @DisplayName("When get page meetup is null throw error")
+    void whenGetMeetupNullThrowError() throws Exception {
+
+        given(meetupService.findAllMeetup(null, null)).willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST));
+
+        String json = new ObjectMapper().writeValueAsString(null);
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post(API_MEETUP)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mockMvc
+                .perform(requestBuilder)
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("Should delete meetup from registration successful")
+    void deleteMeetupFromRegistrationSuccessful() throws Exception {
+
+        Meetup meetup = MeetupCreator.createMeetup(RegistrationCreator.createRegistration());
+
+        given(meetupService.findMeetupById(meetup.getId())).willReturn(Optional.of(meetup));
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .delete(API_MEETUP)
+                .accept(MediaType.APPLICATION_JSON);
+
+        mockMvc
+                .perform(requestBuilder)
+                .andExpect(status().isNoContent());
+
+    }
+
+    @Test
+    @DisplayName("When delete meetup not exist throw error")
+    void whenDeleteMeetupNotExistThrowError() throws Exception {
+
+        given(meetupService.findMeetupById(null)).willThrow(new ResponseStatusException(HttpStatus.NO_CONTENT));
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .delete(API_MEETUP)
+                .accept(MediaType.APPLICATION_JSON);
+
+        mockMvc
+                .perform(requestBuilder)
+                .andExpect(status().isNoContent());
+
+
+    }
+
+    @Test
+    @DisplayName("Update registration meetup successfully")
+    void updateMeetupSuccessful() throws Exception {
+
+        Registration registration = RegistrationCreator.createRegistration();
+        RegistrationDTO registrationDTO = RegistrationCreator.createRegistrationDTO();
+
+        MeetupDTO meetupDTO = MeetupCreator.createMeetupDTO(registrationDTO);
+        Meetup replaceMeetup = MeetupCreator.createMeetup(registration);
+
+        String json = new ObjectMapper().writeValueAsString(meetupDTO);
+
+        given(registrationService.getRegistrationByRegistrationAttribute(meetupDTO.getRegistrationAttribute())).willReturn(registration);
+        given(meetupService.findMeetupById(replaceMeetup.getId())).willReturn(Optional.of(replaceMeetup));
+        given(meetupService.findByEvent(meetupDTO.getEvent())).willReturn(replaceMeetup);
+
+        Meetup updateMeetup = MeetupCreator.createUpdateMeetup(registration);
+
+        given(meetupService.update(updateMeetup)).willReturn(updateMeetup);
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .put(API_MEETUP)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mockMvc
+                .perform(requestBuilder)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("event").value(meetupDTO.getEvent()))
+                .andExpect(jsonPath("registration").value(meetupDTO.getRegistration()));
+
+    }
+
+
+    @Test
+    @DisplayName("When try to uptading meetup no exist throw error")
+    void whenUpdateMeetupNoExistingThrowError() throws Exception {
+
+        MeetupDTO meetupDTO = MeetupCreator.createMeetupDTO();
+        String json = new ObjectMapper().writeValueAsString(meetupDTO);
+
+        given(meetupService.findByEvent(anyString())).willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST));
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .put(API_MEETUP)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mockMvc
+                .perform(requestBuilder)
+                .andExpect(status().isBadRequest());
+
+
+    }
     //TODO whenUpdateMeetupNoExistingError
 
 }

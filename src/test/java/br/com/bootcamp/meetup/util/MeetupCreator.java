@@ -53,6 +53,7 @@ public class MeetupCreator {
 
     public static MeetupDTO createMeetupDTO(RegistrationDTO registrationDTO){
         return MeetupDTO.builder()
+                .id(1L)
                 .event("World Domination")
                 .registrationAttribute("1234")
                 .registration(registrationDTO)
@@ -71,6 +72,15 @@ public class MeetupCreator {
         return MeetupFilterDTO.builder()
                 .event("World Domination")
                 .registration("Cat")
+                .build();
+    }
+
+    public static Meetup createUpdateMeetup(Registration registration) {
+        return Meetup.builder()
+                .event("friendly cat")
+                .registration(registration)
+                .meetupDate(LocalDateTime.now())
+                .registered(true)
                 .build();
     }
 }

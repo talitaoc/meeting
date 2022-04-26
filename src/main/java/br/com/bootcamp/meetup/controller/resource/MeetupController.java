@@ -33,7 +33,7 @@ public class MeetupController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    private ResponseEntity<Long> create(@RequestBody @Valid MeetupDTO meetupDTO){
+    private ResponseEntity<MeetupDTO> create(@RequestBody @Valid MeetupDTO meetupDTO){
 
         Registration registration = registrationService.getRegistrationByRegistrationAttribute(meetupDTO.getRegistrationAttribute());
 
@@ -44,7 +44,8 @@ public class MeetupController {
                 .build();
 
         meetup = meetupService.save(meetup);
-        return new ResponseEntity<>(meetup.getId(),HttpStatus.CREATED);
+
+       return new ResponseEntity<>(modelMapper.map(meetup, MeetupDTO.class),HttpStatus.CREATED);
 
     }
 
@@ -75,8 +76,7 @@ public class MeetupController {
 
         Registration registration = registrationService.getRegistrationByRegistrationAttribute(meetupDTO.getRegistrationAttribute());
 
-        Meetup meetup = modelMapper.map(meetupDTO, Meetup.class);
-        meetup = meetupService.findByEvent(meetup.getEvent());
+        Meetup meetup = meetupService.findByEvent(meetupDTO.getEvent());
 
         meetup.setEvent(meetup.getEvent());
         meetup.setRegistration(registration);
