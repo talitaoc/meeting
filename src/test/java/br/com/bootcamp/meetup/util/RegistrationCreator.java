@@ -14,7 +14,7 @@ public class RegistrationCreator {
                 .name("Lola")
                 .cpf(1234L)
                 .registration("Cat")
-                .meetupList(MeetupCreator.ListMeetup())
+                .meetupList(MeetupCreator.listMeetup())
                 .build();
     }
 

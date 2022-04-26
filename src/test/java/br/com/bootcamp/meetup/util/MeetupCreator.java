@@ -1,7 +1,14 @@
 package br.com.bootcamp.meetup.util;
 
+import br.com.bootcamp.meetup.controller.dtos.MeetupDTO;
+import br.com.bootcamp.meetup.controller.dtos.MeetupFilterDTO;
+import br.com.bootcamp.meetup.controller.dtos.RegistrationDTO;
 import br.com.bootcamp.meetup.model.Meetup;
 import br.com.bootcamp.meetup.model.Registration;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 
@@ -36,10 +43,35 @@ public class MeetupCreator {
                 .build();
     }
 
-    public static List<Meetup> ListMeetup(){
+    public static List<Meetup> listMeetup(){
 
         List<Meetup> lista = new ArrayList<>(List.of(createValidMeetup()));
 
         return lista;
     }
+
+
+    public static MeetupDTO createMeetupDTO(RegistrationDTO registrationDTO){
+        return MeetupDTO.builder()
+                .event("World Domination")
+                .registrationAttribute("1234")
+                .registration(registrationDTO)
+                .build();
+    }
+
+    public static MeetupDTO createMeetupDTO() {
+        return MeetupDTO.builder()
+                .event("World Domination")
+                .registrationAttribute("1234")
+                .registration(RegistrationCreator.createRegistrationDTO())
+                .build();
+    }
+
+    public static MeetupFilterDTO createMeetupFilterDTO() {
+        return MeetupFilterDTO.builder()
+                .event("World Domination")
+                .registration("Cat")
+                .build();
+    }
 }
+

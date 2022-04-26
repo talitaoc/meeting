@@ -67,6 +67,11 @@ public class RegistrationService {
     }
 
     public Registration getRegistrationByRegistrationAttribute(String registrationAttribute){
+
+        if(Objects.isNull(registrationAttribute)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Registration not found.");
+        }
+
         return registrationRepository.findByRegistration(registrationAttribute);
     }
 }

@@ -8,13 +8,16 @@ import br.com.bootcamp.meetup.model.Registration;
 import br.com.bootcamp.meetup.service.MeetupService;
 import br.com.bootcamp.meetup.service.RegistrationService;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,7 +33,7 @@ public class MeetupController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    private Long create(@RequestBody MeetupDTO meetupDTO){
+    private ResponseEntity<Long> create(@RequestBody @Valid MeetupDTO meetupDTO){
 
         Registration registration = registrationService.getRegistrationByRegistrationAttribute(meetupDTO.getRegistrationAttribute());
 
@@ -41,7 +44,7 @@ public class MeetupController {
                 .build();
 
         meetup = meetupService.save(meetup);
-        return meetup.getId();
+        return new ResponseEntity<>(meetup.getId(),HttpStatus.CREATED);
 
     }
 

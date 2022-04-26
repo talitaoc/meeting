@@ -6,6 +6,7 @@ import br.com.bootcamp.meetup.model.Meetup;
 import br.com.bootcamp.meetup.model.Registration;
 import br.com.bootcamp.meetup.repository.MeetupRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import javax.transaction.Transactional;
 import java.util.Objects;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MeetupService {
@@ -49,6 +51,11 @@ public class MeetupService {
     }
 
     public Page<Meetup> findAllMeetup(MeetupFilterDTO meetupFilterDTO, Pageable pageable){
+
+        if(Objects.isNull(meetupFilterDTO)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Meetup not found.");
+        }
+
         return meetupRepository.findByRegistrationOnMeetup(meetupFilterDTO.getRegistration(), meetupFilterDTO.getEvent(), pageable);
     }
 
