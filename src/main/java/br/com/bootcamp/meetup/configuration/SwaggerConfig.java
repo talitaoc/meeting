@@ -19,7 +19,7 @@ public class SwaggerConfig {
         public Docket docket() {
             return new Docket(DocumentationType.SWAGGER_2)
                     .select()
-                    .apis( RequestHandlerSelectors.any())
+                    .apis(RequestHandlerSelectors.basePackage("br.com.bootcamp.meetup.controller.resource"))
                     .paths(PathSelectors.any())
                     .build()
                     .apiInfo(apiInfo());
@@ -28,16 +28,16 @@ public class SwaggerConfig {
         private ApiInfo apiInfo() {
             return new ApiInfoBuilder()
                     .title("Meetups API")
-                    .description("RestApi de meetup produzida no bootcamp de Java da Womakerscode")
+                    .description("RestApi de meetup produzido no bootcamp de Java da Womakerscode")
                     .version("1.0")
                     .contact(contact())
                     .build();
         }
 
         private Contact contact() {
-            return new Contact("Womakerscode Ana Neri",
+            return new Contact("Talita Orlando de Campos",
                     "http://womakerscode.org",
-                    "neribia7@gmail.com");
+                    "talitaoc@gmail.com");
         }
     }
 

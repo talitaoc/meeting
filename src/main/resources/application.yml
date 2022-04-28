@@ -1,13 +1,18 @@
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
 spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
   datasource:
-    url: jdbc:mysql://localhost:3306/registration_crud
-    username: root
-    password: 1234
+    url: jdbc:mysql://azure-spring-meetup.mysql.database.azure.com:3306/demo? serverTimezone=UTC
+    username: spring@azure-spring-meetup
+    password: Azure1234
   jpa:
     database-platform: org.hibernate.dialect.MySQL5Dialect
-    hibernate.ddl-auto: create
+    hibernate.ddl-auto: create-drop
     generate-ddl: true
     show-sql: true
