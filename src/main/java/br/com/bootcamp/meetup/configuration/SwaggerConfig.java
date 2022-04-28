@@ -36,7 +36,7 @@ public class SwaggerConfig {
 
         private Contact contact() {
             return new Contact("Talita Orlando de Campos",
-                    "http://womakerscode.org",
+                    "https://www.linkedin.com/in/talita-orlando-de-campos-2b6634146/",
                     "talitaoc@gmail.com");
         }
     }

@@ -1,8 +1,12 @@
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
 spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/registration_crud
-    username: root
-    password: 1234
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate.ddl-auto: create

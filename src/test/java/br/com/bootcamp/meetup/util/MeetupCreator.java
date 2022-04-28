@@ -20,6 +20,7 @@ public class MeetupCreator {
 
     public static Meetup createValidMeetup(){
         return Meetup.builder()
+                .id(1L)
                 .event("World Domination")
                 .registration(RegistrationCreator.createNewRegistrationValid())
                 .meetupDate(LocalDateTime.now())
