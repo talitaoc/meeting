@@ -91,34 +91,34 @@
           </excludes> 
         </configuration> 
       </plugin>  
-      <plugin>
-        <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure-webapp-maven-plugin</artifactId>
-        <version>2.5.0</version>
-        <configuration>
-          <schemaVersion>v2</schemaVersion>
-          <subscriptionId>76d97d82-857f-4e63-906d-84bd480635a8</subscriptionId>
-          <resourceGroup>meetup-1651151546678-rg</resourceGroup>
-          <appName>meetup-1651151546678</appName>
-          <pricingTier>P1v2</pricingTier>
-          <region>centralus</region>
-          <runtime>
-            <os>Windows</os>
-            <javaVersion>Java 11</javaVersion>
-            <webContainer>Java SE</webContainer>
-          </runtime>
-          <deployment>
-            <resources>
-              <resource>
-                <directory>${project.basedir}/target</directory>
-                <includes>
-                  <include>*.jar</include>
-                </includes>
-              </resource>
-            </resources>
-          </deployment>
-        </configuration>
-      </plugin>
+      <plugin> 
+        <groupId>com.microsoft.azure</groupId>  
+        <artifactId>azure-webapp-maven-plugin</artifactId>  
+        <version>2.5.0</version>  
+        <configuration> 
+          <schemaVersion>v2</schemaVersion>  
+          <subscriptionId>76d97d82-857f-4e63-906d-84bd480635a8</subscriptionId>  
+          <resourceGroup>meetup-api-rg</resourceGroup>  
+          <appName>servico-meetup-api</appName>  
+          <pricingTier>P1v2</pricingTier>  
+          <region>east us</region>  
+          <runtime> 
+            <os>Windows</os>  
+            <javaVersion>Java 11</javaVersion>  
+            <webContainer>Java SE</webContainer> 
+          </runtime>  
+          <deployment> 
+            <resources> 
+              <resource> 
+                <directory>${project.basedir}/target</directory>  
+                <includes> 
+                  <include>*.jar</include> 
+                </includes> 
+              </resource> 
+            </resources> 
+          </deployment> 
+        </configuration> 
+      </plugin> 
     </plugins> 
   </build> 
 </project>
