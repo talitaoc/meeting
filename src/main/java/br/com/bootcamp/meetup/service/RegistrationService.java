@@ -77,7 +77,11 @@ public class RegistrationService {
         if(Objects.isNull(registrationAttribute)){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Registration not found.");
         }
+        Registration registration = registrationRepository.findByRegistration(registrationAttribute);
 
-        return registrationRepository.findByRegistration(registrationAttribute);
+        if(Objects.isNull(registration)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Registration not exist.");
+        }
+        return registration;
     }
 }
