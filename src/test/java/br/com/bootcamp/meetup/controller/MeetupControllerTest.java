@@ -2,17 +2,14 @@ package br.com.bootcamp.meetup.controller;
 
 import br.com.bootcamp.meetup.configuration.ModelMapperConfiguration;
 import br.com.bootcamp.meetup.controller.dtos.MeetupDTO;
-import br.com.bootcamp.meetup.controller.dtos.MeetupFilterDTO;
 import br.com.bootcamp.meetup.controller.dtos.RegistrationDTO;
 import br.com.bootcamp.meetup.controller.resource.MeetupController;
-import br.com.bootcamp.meetup.controller.resource.RegistrationController;
 import br.com.bootcamp.meetup.model.Meetup;
 import br.com.bootcamp.meetup.model.Registration;
 import br.com.bootcamp.meetup.service.MeetupService;
 import br.com.bootcamp.meetup.service.RegistrationService;
 import br.com.bootcamp.meetup.util.MeetupCreator;
 import br.com.bootcamp.meetup.util.RegistrationCreator;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;

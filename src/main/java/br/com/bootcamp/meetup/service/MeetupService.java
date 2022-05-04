@@ -1,6 +1,7 @@
 package br.com.bootcamp.meetup.service;
 
 
+import br.com.bootcamp.meetup.controller.dtos.MeetupDTO;
 import br.com.bootcamp.meetup.controller.dtos.MeetupFilterDTO;
 import br.com.bootcamp.meetup.model.Meetup;
 import br.com.bootcamp.meetup.model.Registration;
@@ -23,6 +24,7 @@ import java.util.Optional;
 public class MeetupService {
 
     private final MeetupRepository meetupRepository;
+
 
     @Transactional
     public Meetup save(Meetup meetup){

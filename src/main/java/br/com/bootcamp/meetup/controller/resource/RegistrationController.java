@@ -36,7 +36,7 @@ public class RegistrationController {
 
     }
 
-    @GetMapping //testar método depois
+    @GetMapping
     public ResponseEntity<List<RegistrationDTO>> list(){
 
         List<Registration> registrationList = registrationService.findAllRegistration();
@@ -49,7 +49,7 @@ public class RegistrationController {
         return new ResponseEntity<>(registrationDTO, HttpStatus.OK);
     }
 
-    @GetMapping(path = "{cpf}") //fazer com cpf
+    @GetMapping(path = "{cpf}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<RegistrationDTO> findByCpf(@PathVariable(value = "cpf", required = false) Long cpf){
 
@@ -63,14 +63,13 @@ public class RegistrationController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<RegistrationDTO> replace(@RequestBody RegistrationDTO registrationDTO){
 
-        Registration registration = modelMapper.map(registrationDTO,Registration.class);
-        registration = registrationService.findByCpf(registration.getCpf());
+        Registration registration = registrationService.findByCpf(registrationDTO.getCpf());
 
-        registration.setName(registration.getName());
-        registration.setCpf(registration.getCpf());
-        registration.setRegistration(registration.getRegistration());
+        registration.setName(registrationDTO.getName());
+        registration.setCpf(registrationDTO.getCpf());
+        registration.setRegistration(registrationDTO.getRegistration());
 
-        registrationService.save(registration);
+        registrationService.update(registration);
 
         log.info("Update was a success {} ",registration);
 

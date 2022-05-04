@@ -8,7 +8,6 @@ import br.com.bootcamp.meetup.model.Registration;
 import br.com.bootcamp.meetup.service.MeetupService;
 import br.com.bootcamp.meetup.service.RegistrationService;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -45,7 +44,7 @@ public class MeetupController {
 
         meetup = meetupService.save(meetup);
 
-       return new ResponseEntity<>(modelMapper.map(meetup, MeetupDTO.class),HttpStatus.CREATED);
+       return new ResponseEntity<>(fromMeetupToMeetupDTO(meetup),HttpStatus.CREATED);
 
     }
 
@@ -78,12 +77,11 @@ public class MeetupController {
 
         Meetup meetup = meetupService.findByEvent(meetupDTO.getEvent());
 
-        meetup.setEvent(meetup.getEvent());
+        meetup.setEvent(meetupDTO.getEvent());
         meetup.setRegistration(registration);
         meetup.setMeetupDate(LocalDateTime.now());
-        meetup.setRegistered(meetup.getRegistered());
 
-        meetupService.save(meetup);
+        meetupService.update(meetup);
 
         return modelMapper.map(meetup, MeetupDTO.class);
    }
@@ -94,5 +92,35 @@ public class MeetupController {
 
         meetupService.delete(modelMapper.map(filterDTO, Meetup.class));
    }
+
+    private static MeetupDTO fromMeetupToMeetupDTO(Meetup meetup){
+
+        return MeetupDTO.builder()
+                .id(meetup.getId())
+                .event(meetup.getEvent())
+                .registration(RegistrationDTO.builder()
+                        .name(meetup.getRegistration().getName())
+                        .cpf(meetup.getRegistration().getCpf())
+                        .registration(meetup.getRegistration().getRegistration())
+                        .build())
+                .registrationAttribute(meetup.getRegistration().getRegistration())
+                .build();
+
+
+    }
+    private static Meetup fromMeetupDTOToMeetup(MeetupDTO meetupDTO){
+
+        return Meetup.builder()
+                .event(meetupDTO.getEvent())
+                .registration(Registration.builder()
+                        .name(meetupDTO.getRegistration().getName())
+                        .cpf(meetupDTO.getRegistration().getCpf())
+                        .registration(meetupDTO.getRegistrationAttribute())
+                        .build())
+                .build();
+
+
+
+    }
 
 }

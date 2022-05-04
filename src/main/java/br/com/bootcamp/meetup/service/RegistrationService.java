@@ -14,7 +14,6 @@ import javax.transaction.Transactional;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -44,9 +43,16 @@ public class RegistrationService {
     public Registration findByCpf(Long cpf){
 
         if(Objects.isNull(cpf)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid cpf");
+        }
+
+        Registration registration = registrationRepository.getByCpf(cpf);
+
+        if(Objects.isNull(registration)){
           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Registration not found.");
         }
-        return registrationRepository.getByCpf(cpf);
+
+        return registration;
     }
 
     public List<Registration> findAllRegistration(){
