@@ -77,10 +77,10 @@ public class RegistrationController {
 
     }
 
-    @DeleteMapping(path = "{id}")
+    @DeleteMapping(path = "{cpf}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> delete(@PathVariable(value = "id", required = false) Long id){
-        registrationService.delete(id);
+    public ResponseEntity<Void> delete(@PathVariable(value = "cpf", required = false) Long cpf){
+        registrationService.delete(cpf);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

@@ -29,9 +29,6 @@ public class MeetupService {
     @Transactional
     public Meetup save(Meetup meetup){
 
-        if(meetupRepository.existsByEvent(meetup.getEvent())){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Meetup already registered");
-        }
         return meetupRepository.save(meetup);
     }
 

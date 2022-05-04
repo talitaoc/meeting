@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -56,15 +57,7 @@ public class MeetupController {
         List<MeetupDTO> meetupDTOList = result
                 .getContent() //volta um objeto Meetup que ta no result
                 .stream() // transforma Meetup numa Stream Meetup
-                .map(meetup -> { //mapeia cada elemento da Stream de acordo com a funcao passada para cada MeetupDTO. transforma Meetup em MeetupDTO
-
-                    Registration registration = meetup.getRegistration();
-                    RegistrationDTO registrationDTO =  modelMapper.map(registration, RegistrationDTO.class);
-
-                    MeetupDTO meetupDTO = modelMapper.map(meetup, MeetupDTO.class);
-                    meetupDTO.setRegistration(registrationDTO);
-                    return  meetupDTO;
-                        }).collect(Collectors.toList()); //justa todas as partes numa nova lista do tipo MeetupDTO
+                .map(MeetupController::fromMeetupToMeetupDTO).collect(Collectors.toList()); //justa todas as partes numa nova lista do tipo MeetupDTO
         return new PageImpl<MeetupDTO>(meetupDTOList,pageable, result.getTotalElements()); //retorna um PageImpl do tipo MeetupDTO
     }
 
@@ -79,18 +72,20 @@ public class MeetupController {
 
         meetup.setEvent(meetupDTO.getEvent());
         meetup.setRegistration(registration);
-        meetup.setMeetupDate(LocalDateTime.now());
 
         meetupService.update(meetup);
 
         return modelMapper.map(meetup, MeetupDTO.class);
    }
 
-   @DeleteMapping
+   @DeleteMapping(path = "{id}")
    @ResponseStatus(HttpStatus.NO_CONTENT)
-   public void delete(MeetupFilterDTO filterDTO){
+   public void deleteMeetup(@PathVariable(value = "id", required = false) Long id){
 
-        meetupService.delete(modelMapper.map(filterDTO, Meetup.class));
+       Optional<Meetup> meetup = meetupService.findMeetupById(id);
+        meetupService.delete(meetup.get());
+
+
    }
 
     private static MeetupDTO fromMeetupToMeetupDTO(Meetup meetup){

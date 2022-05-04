@@ -9,10 +9,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
