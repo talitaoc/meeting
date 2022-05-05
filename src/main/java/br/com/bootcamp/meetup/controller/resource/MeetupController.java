@@ -85,7 +85,6 @@ public class MeetupController {
        Optional<Meetup> meetup = meetupService.findMeetupById(id);
         meetupService.delete(meetup.get());
 
-
    }
 
     private static MeetupDTO fromMeetupToMeetupDTO(Meetup meetup){

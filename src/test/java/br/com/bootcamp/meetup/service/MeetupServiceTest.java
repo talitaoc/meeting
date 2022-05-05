@@ -57,18 +57,6 @@ public class MeetupServiceTest {
         verify(meetupRepository,times(1)).save(meetupToBeSaved);
     }
 
-    @Test
-    @DisplayName("Throw error when meetup already exists in this registration")
-    void whenMeetupAlreadyExistsThrowError(){
-
-        Meetup meetup = MeetupCreator.createValidMeetup();
-
-        when(meetupRepository.existsByEvent(MeetupCreator.createValidMeetup().getEvent())).thenReturn(true);
-        //when(meetupRepository.getByEvent(anyString())).thenThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST));
-
-        assertThrows(ResponseStatusException.class, ()->meetupService.save(meetup));
-
-    }
 
     @Test
     @DisplayName("Should get a meetup by id")
