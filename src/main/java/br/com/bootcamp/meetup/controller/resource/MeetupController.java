@@ -65,17 +65,13 @@ public class MeetupController {
    @ResponseStatus(HttpStatus.OK)
     public MeetupDTO update(@RequestBody MeetupDTO meetupDTO){
 
-
-        Registration registration = registrationService.getRegistrationByRegistrationAttribute(meetupDTO.getRegistrationAttribute());
-
         Meetup meetup = meetupService.findByEvent(meetupDTO.getEvent());
 
         meetup.setEvent(meetupDTO.getEvent());
-        meetup.setRegistration(registration);
 
         meetupService.update(meetup);
 
-        return modelMapper.map(meetup, MeetupDTO.class);
+        return fromMeetupToMeetupDTO(meetup);
    }
 
    @DeleteMapping(path = "{id}")

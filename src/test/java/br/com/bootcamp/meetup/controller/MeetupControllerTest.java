@@ -154,9 +154,8 @@ public class MeetupControllerTest {
 
         given(meetupService.findMeetupById(meetup.getId())).willReturn(Optional.of(meetup));
 
-
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-                .delete(API_MEETUP)
+                .delete(API_MEETUP + "/1")
                 .accept(MediaType.APPLICATION_JSON);
 
         mockMvc
